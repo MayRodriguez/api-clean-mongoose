@@ -1,14 +1,14 @@
 const express = require("express");
-const Koder = require("../usecases/koders.usecase")
+const Practice = require("../usecases/practice.usecase")
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    try {const allKoders = await Koder.getAll();
+    try {const allPractices = await Practice.getAll();
     res.json({
-        message: "All koders", 
+        message: "All Practices", 
         data: {
-            koders: allKoders
+            practices: allPractices
         }
     })
     } catch (err) {
@@ -23,14 +23,14 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const koderData = req.body;
-        const newKoder = await Koder.create(koderData);
+        const practiceData = req.body;
+        const newPractice = await Practice.create(practiceData);
 
         res.status(201);
         res.json({
-            message: "Koder created",
+            message: "Practice created",
             data: {
-                koder: newKoder,
+                practice: newPractice,
             },
         });
     } catch (err) {
@@ -45,11 +45,13 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        const koderById = await Koder.getById(id);
+        const {id} = req.params;
+        const practiceById = await Practice.getById(id);
         res.json({
-            message: `Koder found: ${koderById.firstName}`, 
-            data: {koderById}
+            message: `Practice found`, 
+            data: {
+                practice: practiceById
+            }
         })
     } catch(err) {
         res.status(err.status || 500);
@@ -63,11 +65,11 @@ router.get("/:id", async (req, res) => {
 router.delete("/:id", async(req, res) => {
     try {
         const {id} = req.params;
-        const koderDeleted = await Koder.deleteById(id)
+        const practiceDeleted = await Practice.deleteById(id)
         res.json({
-            message: "koder deleted",
+            message: "practice deleted",
             data: {
-                koder: koderDeleted.firstName
+                practice: practiceDeleted.firstName
             }
         })
     } catch (err){
@@ -83,11 +85,11 @@ router.patch("/:id", async(req,res) => {
     try {
         const {id} = req.params;
         const data = req.body;
-        const koderUpdated = await Koder.updateById(id, data);
+        const practiceUpdated = await Practice.updateById(id, data);
         res.json({
-            message: "koder updated",
+            message: "Practice updated",
             data: {
-                koder: koderUpdated
+                practice: practiceUpdated
             }
         })
     } catch(err) {
